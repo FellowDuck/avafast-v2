@@ -1,0 +1,68 @@
+create database db_clientes
+drop database db_clientes
+
+use db_clientes
+
+select * from tb_restaurante
+
+delete tb_restaurante where id = 4
+
+CREATE TABLE tb_restaurante(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    endereco VARCHAR(45) NOT NULL,
+    contato VARCHAR(45) NOT NULL,
+    categoria VARCHAR(45) NOT NULL,
+    cupons_disponiveis INT,
+    cupons_resgatados INT
+);
+
+CREATE TABLE tb_cliente(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(45) NOT NULL,
+    cpf VARCHAR(45) NOT NULL,
+    dt_nascimento DATE NOT NULL,
+    pontos INT,
+    fk_id_restaurante INT,
+    FOREIGN KEY (fk_id_restaurante) REFERENCES tb_restaurante (id)
+);
+
+CREATE TABLE tb_especialista(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(45) NOT NULL,
+    especialidade VARCHAR(45),
+    cpf INT NOT NULL,
+    UNIQUE(cpf)
+);
+
+CREATE TABLE tb_avaliacoes(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    classificacao INT NOT NULL,
+    comentarios VARCHAR(100),
+    dt_avaliacao DATE NOT NULL,
+    id_restaurante INT,
+    id_cliente INT,
+    id_especialista INT,
+    FOREIGN KEY (id_restaurante) REFERENCES tb_restaurante (id),
+    FOREIGN KEY (id_cliente) REFERENCES tb_cliente (id),
+    FOREIGN KEY (id_especialista) REFERENCES tb_especialista (id)
+);
+
+CREATE TABLE tb_usuario(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(45) NOT NULL,
+    senha VARCHAR(100) NOT NULL,
+    dt_criacao DATE NOT NULL,
+    id_restaurante INT,
+    id_cliente INT,
+    FOREIGN KEY (id_restaurante) REFERENCES tb_restaurante (id),
+    FOREIGN KEY (id_cliente) REFERENCES tb_cliente (id)
+);
+
+CREATE TABLE tb_imagens(
+    id SERIAL PRIMARY KEY,
+    caminho_arquivo VARCHAR(200) NOT NULL,
+    descricao_imagem VARCHAR(200) NOT NULL,
+    id_restaurante INT,
+    FOREIGN KEY (id_restaurante) REFERENCES tb_restaurante (id)
+);
